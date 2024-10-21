@@ -1,9 +1,11 @@
 import Header from './components/Header/Header.jsx'
 import TasksWrapper from './components/TasksWrapper.jsx';
 import TaskModal from './components/TaskModal.jsx'
-import { useState } from 'react';
+import { useState, createContext } from 'react';
 
-function App() {
+export const DeleteContext = createContext(null);
+
+export function App() {
   // Состояние модального окна
   const [ show, setShow ] = useState(false)
   const handleClose = () => setShow(false);
@@ -18,18 +20,25 @@ function App() {
       {
         'taskName': taskName, 
         'taskDeadline': taskDeadline, 
-        'taskDescription': taskDescription 
+        'taskDescription': taskDescription,
+        'taskId': Date.now()
       }
     ])
+  }
+  const deleteTask = e => { 
+    setTasks(tasks.filter( task => task.taskId !== Number(e.currentTarget.id) ))
   }
 
   return (
     <>
       <Header openModal={handleShow}/>
-      <TasksWrapper tasks={tasks}/>
+
+      <DeleteContext.Provider value={deleteTask}>
+        <TasksWrapper tasks={tasks}/>
+      </DeleteContext.Provider>
+      
       <TaskModal show={show} closeModal={handleClose} createTask={addTask}/>
     </>
   );
 }
 
-export default App;
