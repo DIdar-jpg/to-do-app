@@ -14,12 +14,19 @@ export function App() {
   // Задания
   const [ tasks, setTasks ] = useState([])
 
+
   const addTask = (taskName, taskDeadline, taskDescription) => {
+    console.log(taskDeadline)
+    let taskDeadlineArr = taskDeadline.split('-')
+    let temp = taskDeadlineArr[0];
+    taskDeadlineArr[0] = taskDeadlineArr[2];
+    taskDeadlineArr[2] = temp;
+    let taskDeadlineStr = taskDeadlineArr.join('.')
     setTasks([
       ...tasks,
       {
         'taskName': taskName, 
-        'taskDeadline': taskDeadline, 
+        'taskDeadline': taskDeadline ? `${taskDeadlineStr} / ${new Date().toLocaleDateString({day: '2-digit', month: '2-digit', year: 'numeric'})}` : '', 
         'taskDescription': taskDescription,
         'taskId': Date.now()
       }

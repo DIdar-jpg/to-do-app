@@ -17,7 +17,7 @@ export default function Task({taskName, taskDeadline, taskdecription, taskId}) {
     <Card style={{width: '30%'}}>
         <Card.Body>
             <Card.Title>{taskName}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">12.10.2024 / {taskDeadline}</Card.Subtitle>
+            <Card.Subtitle className="mb-2 text-muted">{taskDeadline}</Card.Subtitle>
             <Card.Text>
               {taskdecription}
             </Card.Text>
