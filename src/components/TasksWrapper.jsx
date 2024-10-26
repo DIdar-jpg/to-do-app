@@ -9,7 +9,7 @@ function TasksWrapper({tasks}) {
   console.log(tasks)
   return (
     <Container>
-      <section className="my-5 d-flex w-100 h-100 flex-wrap align-items-center rounded-4 gap-5">
+      <section className="my-5 d-flex w-100 h-100 flex-wrap align-items-start rounded-4 gap-5">
         {
           tasks.length ? 
           tasks.map( task => <Task taskName={task.taskName} taskDeadline={task.taskDeadline} taskDescription={task.taskDescription} taskId={task.taskId}/>)
