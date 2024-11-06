@@ -11,3 +11,42 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+button{
+  background: none;
+  border: none;
+  outline: none;
+}
+
+
+
+.task-card{
+  width: 30%;
+}
+
+.empty-list-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  padding: 8px 12px;
+  border-radius: 7px;
+  transition: linear 150ms;
+}
+.empty-list-btn:hover {
+  background-color: #0D6EFD;
+  color: #fff;
+}
+
+
+@media (max-width: 762px) {
+  .task-card{
+    width: 45%;
+  }
+}
+@media (max-width: 640px) {
+  .task-card{
+    width: 100%;
+  }
+}
+

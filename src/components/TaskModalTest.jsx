@@ -3,34 +3,55 @@ import React, { useRef, useState, useContext, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-
 import { BsCheck2 } from "react-icons/bs";
-import { TiEdit } from "react-icons/ti";
 
 import { TaskContext } from '../App.jsx'
 
-export default function TaskModal({show}) {
+export default function TaskModalTest({show, closeModal, createTask}) {
 
-    const { tasks, modalMode, handleClose, addTask, editTask, setCreateMode, currentTask, setCurrentTask } = useContext(TaskContext)
+    const { currentTarget, tasks, deleteTask, modalMode} = useContext(TaskContext);
 
-    const [ formData, setFormData ] = useState({
-        'taskName': null,
-        'taskDeadline': null,
-        'taskDescription':  null,
-        'taskId': null
-    })
 
-    useEffect(() => {  
+    console.log(modalMode)
+    // const formRef = useRef(null)
+    const [ formData, setFormData ] = useState(
         modalMode === 'edit' 
-        ? setFormData(...tasks.filter( task => task.taskId === currentTask ))
-        : setFormData({
-            'taskName': null,
-            'taskDeadline': null,
-            'taskDescription':  null,
-            'taskId': null
-        })
-        
-    }, [modalMode])
+        ? 
+        tasks.filter( item => item.taskId === currentTarget)[0]
+        :
+        {
+            'taskName': '',
+            'taskDeadline': '',
+            'taskDescription':  '',
+            'taskId':  ''
+        }
+
+
+    )
+    useEffect( () => {
+        setFormData(modalMode === 'edit' 
+            ? 
+            tasks.filter( item => item.taskId === currentTarget)[0]
+            :
+            {
+                'taskName': '',
+                'taskDeadline': '',
+                'taskDescription':  '',
+                'taskId':  ''
+            })
+    }, [modalMode, currentTarget])
+
+    const editTask = () => {
+        const taskIndex = tasks.indexOf(formData)
+        console.log([...tasks.slice(0, taskIndex - 1), formData, ...tasks.slice(taskIndex + 2)])
+        // setFormData([
+            
+        // ])
+
+        // tasks[taskIndex].taskName = formData.taskName
+        // tasks[taskIndex].taskDeadline = formData.taskDeadline
+        // tasks[taskIndex].taskDescription = formData.taskDescription
+    }
 
     const handleChange = e => {
         const { name, value } = e.target
@@ -42,30 +63,29 @@ export default function TaskModal({show}) {
 
     const handleSubmit = e => { 
         e.preventDefault();
+
         modalMode === 'edit'
-        ? editTask(formData)
-        : addTask(formData.taskName, formData.taskDeadline, formData.taskDescription)
+        ?
+        editTask()
+        :
+        createTask(formData.taskName, formData.taskDeadline, formData.taskDescription)
 
         setFormData({
             'taskName': '',
             'taskDeadline': '',
-            'taskDescription':  '',
-            'taskId': null
+            'taskDescription':  ''
         })
-        setCreateMode()
-        handleClose()
+        // formRef.current.reset()
+        closeModal()
     }
-    
     return (
     <Modal
     show={show}
-    onHide={() => {  
-        handleClose()
-        setCreateMode()
-    }}
+    onHide={closeModal}
     backdrop="static"
     keyboard={false}
     >
+        {/* ref={formRef} */}
         <Form  onSubmit={handleSubmit}>
             <Modal.Header closeButton>
                 <Form.Group className="mb-1 w-75" controlId="formTaskName">
@@ -108,24 +128,15 @@ export default function TaskModal({show}) {
 
             <Modal.Footer>
                 <Button variant="secondary" onClick={() => {
-                    handleClose()
-                    setCreateMode()
+                    closeModal()
+                    // formRef.current.reset()
                 }}>
                     Close
                 </Button>
-                { 
-                    modalMode === 'edit' 
-                    ?
-                    <Button variant="primary" type='submit' className='d-flex align-items-center gap-1'>
-                        <span>Edit</span><TiEdit/>
-                    </Button>
-                    : 
-                    <Button variant="primary" type='submit' className='d-flex align-items-center gap-1'>
-                        <span>Create</span><BsCheck2/>
-                    </Button>
-                }
-
-
+                <Button variant="primary" type='submit' className='d-flex align-items-center gap-1'>
+                    { modalMode === 'edit' ? <span>Edit</span> : <span>Create</span>}
+                    <BsCheck2/>
+                </Button>
             </Modal.Footer>
         </Form>
     </Modal>
