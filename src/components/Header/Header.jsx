@@ -39,7 +39,7 @@ function Header({openModal, setCreateMode, handleSearchChange, resetSearchTerm})
                 aria-label="Search"
                 onChange={handleSearchChange}
                 />
-                <Button variant="outline-success" type='submit'>Reset Search</Button>
+                <Button variant="outline-success py-2" style={{'width': '180px'}} type='submit'>Reset Search</Button>
             </Form>
         </Navbar.Collapse>
       </Container>
