@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -11,7 +11,7 @@ import { TaskContext } from '../App.jsx'
 
 export default function TaskModal({show}) {
 
-    const { tasks, modalMode, handleClose, addTask, editTask, setCreateMode, currentTask, setCurrentTask } = useContext(TaskContext)
+    const { tasks, modalMode, handleClose, addTask, editTask, setCreateMode, currentTask } = useContext(TaskContext)
 
     const [ formData, setFormData ] = useState({
         'taskName': null,

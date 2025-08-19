@@ -3,6 +3,8 @@ import TasksWrapper from './components/TasksWrapper.jsx';
 import TaskModal from './components/TaskModal.jsx'
 import { useState, createContext, useEffect } from 'react';
 
+const lSKey = process.env.REACT_APP_LOCAL_STORAGE_KEY
+
 export const TaskContext = createContext(null);
 
 export function App() {
@@ -43,12 +45,14 @@ export function App() {
     ])
   }
   
-  const deleteTask = taskId => setTasks(tasks.filter( task => task.taskId !== taskId ))
+  const deleteTask = taskId => {
+    setTasks(tasks.filter( task => task.taskId !== taskId ))
+  }
   
-  const editTask =  updatedTask => setTasks( tasks.map( task => task.taskId === updatedTask.taskId ? { ...task , ...updatedTask} : task)) 
+  const editTask =  updatedTask => {
+    setTasks(tasks.map( task => task.taskId === updatedTask.taskId ? { ...task , ...updatedTask} : task)) 
+  }
 
-
-  
   const [ searchTerm, setSearchTerm ] = useState('')
 
   const handleSearchChange = e => { 
@@ -57,7 +61,19 @@ export function App() {
   const resetSearchTerm = () => { setSearchTerm('') }
 
   const filteredTasks = tasks.filter( task => task.taskName.toLowerCase().includes(searchTerm.toLowerCase()))
+
+  useEffect(() => {
+
+    const localData = localStorage.getItem(lSKey)
+    localData !== null && setTasks(JSON.parse(localData))
+
+  }, [])
+
+  useEffect(() => {
+    tasks.length && localStorage.setItem(lSKey, JSON.stringify(tasks));
+  }, [tasks]);
   
+
   return (
     <>
       <Header openModal={handleShow} setCreateMode={setCreateMode} handleSearchChange={handleSearchChange} resetSearchTerm={resetSearchTerm}/>

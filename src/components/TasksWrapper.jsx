@@ -7,7 +7,7 @@ import TasksEmptyList from './TasksEmptyList.jsx'
 
 function TasksWrapper({tasks, searchTerm, filteredTasks}) {
 
-  const tasksToRender = filteredTasks.length || filteredTasks.length === 0 && searchTerm.length > 0 ? filteredTasks : tasks
+  const tasksToRender = filteredTasks.length && searchTerm.length > 0 ? filteredTasks : tasks
   
   return (
     <Container>
